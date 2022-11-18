@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Game Event Sheet</name>
+    <events>
+        <variable constant="0" name="CanShoot" sid="8722937811618311" static="0" type="number">1</variable>
+        <variable constant="0" name="Period_Max" sid="9015707248060361" static="0" type="number">15</variable>
+        <variable constant="0" name="Level" sid="5093528806740935" static="0" type="number">1</variable>
+        <variable constant="0" name="bullets" sid="5801481937734171" static="0" type="number">3</variable>
+        <variable comment="**UPDATE** How many points the player earns per bonus, dodged obstacle, etc." constant="0" name="point_bonus" sid="3794103216636451" static="0" type="number">10</variable>
+        <variable comment="Player&apos;s Score" constant="0" name="score" sid="8015390899066013" static="0" type="number">0</variable>
+        <comment>Add game logic below.</comment>
+        <event-block sid="2989282732139944">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="7378643429464716" type="System" />
+            </conditions>
+            <actions>
+                <action behavior="Sine" id="1" name="Set period" sid="4122760139782232" type="Enemy">
+                    <param id="0" name="Period">random(Period_Max-Level-2,Period_Max-Level)</param>
+                </action>
+                <action id="0" name="Set text" sid="9491893019680997" type="LevelText">
+                    <param id="0" name="Text">&quot;Level: &quot; &amp; Level</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="5049880645385045">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="7176742117730931" type="System">
+                            <param id="0" name="Variable">Level</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-21" name="Reset global variables" sid="9511816063668257" type="System" />
+                    </actions>
+                </event-block>
+                <event-block sid="6900109863296637">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="3654121918722648" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="5281210151045085" type="System">
+                            <param id="0" name="Variable">bullets</param>
+                            <param id="1" name="Value">3</param>
+                        </action>
+                        <action id="-9" name="Set value" sid="9964709682288956" type="System">
+                            <param id="0" name="Variable">Period_Max</param>
+                            <param id="1" name="Value">12</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="3382843340915872">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="9019155126136188" type="System" />
+            </conditions>
+            <actions>
+                <action id="0" name="Set text" sid="2230879047996498" type="HighScoreText">
+                    <param id="0" name="Text">&quot;Score: &quot; &amp; score</param>
+                </action>
+            </actions>
+        </event-block>
+        <event-block sid="890706988216211">
+            <conditions>
+                <condition id="0" name="On key pressed" sid="6825540735694356" type="Keyboard">
+                    <param id="0" name="Key">32</param>
+                </condition>
+                <condition id="-14" name="Compare variable" sid="3711238354970927" type="System">
+                    <param id="0" name="Variable">bullets</param>
+                    <param id="1" name="Comparison">4</param>
+                    <param id="2" name="Value">0</param>
+                </condition>
+                <condition id="-14" name="Compare variable" sid="3480954492039603" type="System">
+                    <param id="0" name="Variable">CanShoot</param>
+                    <param id="1" name="Comparison">0</param>
+                    <param id="2" name="Value">1</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-9" name="Set value" sid="4029650797302099" type="System">
+                    <param id="0" name="Variable">CanShoot</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="0" name="Spawn another object" sid="8404126099723814" type="player">
+                    <param id="0" name="Object">Bullet</param>
+                    <param id="1" name="Layer">1</param>
+                    <param id="2" name="Image point">0</param>
+                </action>
+                <action behavior="Bullet" id="3" name="Set angle of motion" sid="4867771286083302" type="Bullet">
+                    <param id="0" name="Angle">0</param>
+                </action>
+                <action id="-11" name="Subtract from" sid="5748889313640331" type="System">
+                    <param id="0" name="Variable">bullets</param>
+                    <param id="1" name="Value">1</param>
+                </action>
+                <action id="0" name="Set text" sid="5233915990794806" type="BulletText">
+                    <param id="0" name="Text">&quot;Bullets: &quot; &amp;bullets</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="5683188580925601">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="3763838043081297" type="System">
+                            <param id="0" name="Variable">bullets</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="3276560008222051" type="Bullet">
+                            <param id="0" name="Instance variable">LastBullet</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="5077523554846306">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="3878967158027729" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-16" name="Wait" sid="9124746820420922" type="System">
+                            <param id="0" name="Seconds">2.0</param>
+                        </action>
+                        <action id="-9" name="Set value" sid="5222486703642892" type="System">
+                            <param id="0" name="Variable">CanShoot</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="4608889162778789">
+            <conditions>
+                <condition id="0" name="On collision with another object" sid="7823882623679318" type="Bullet">
+                    <param id="0" name="Object">Enemy</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-9" name="Destroy" sid="9965118226873768" type="Bullet" />
+                <action id="-10" name="Add to" sid="1225046740064069" type="System">
+                    <param id="0" name="Variable">score</param>
+                    <param id="1" name="Value">(bullets+1)*50</param>
+                </action>
+                <action id="0" name="Call function" sid="6795149204663108" type="Function">
+                    <param id="0" name="Name">&quot;EndGame&quot;</param>
+                    <param id="1" name="Parameter {n}">1</param>
+                </action>
+            </actions>
+        </event-block>
+        <event-block sid="251088631891277">
+            <conditions>
+                <condition id="0" name="On function" sid="6458974388558598" type="Function">
+                    <param id="0" name="Name">&quot;EndGame&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="5954557297583031">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="7473422502378444" type="System">
+                            <param id="0" name="First value">Function.Param(0)</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Second value">1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-15" name="Set visible" sid="1538577588697924" type="FeedbackText">
+                            <param id="0" name="Visibility">1</param>
+                        </action>
+                        <action id="0" name="Set text" sid="8727387248882163" type="FeedbackText">
+                            <param id="0" name="Text">&quot;Level &quot; &amp; Level  &amp; &quot; accomplished.  Start Level &quot; &amp;Level+1 &amp; &quot; in 3...&quot;</param>
+                        </action>
+                        <action id="-16" name="Wait" sid="7835343856107955" type="System">
+                            <param id="0" name="Seconds">1</param>
+                        </action>
+                        <action id="0" name="Set text" sid="6623859977424291" type="FeedbackText">
+                            <param id="0" name="Text">&quot;Level &quot; &amp; Level  &amp; &quot; accomplished.  Start Level &quot; &amp;Level+1 &amp; &quot; in 2...&quot;</param>
+                        </action>
+                        <action id="-16" name="Wait" sid="9697828868640423" type="System">
+                            <param id="0" name="Seconds">1</param>
+                        </action>
+                        <action id="0" name="Set text" sid="7597164751423102" type="FeedbackText">
+                            <param id="0" name="Text">&quot;Level &quot; &amp; Level  &amp; &quot;accomplished.  Start Level &quot; &amp;Level+1 &amp; &quot; in 1...&quot;</param>
+                        </action>
+                        <action id="-16" name="Wait" sid="222127325725314" type="System">
+                            <param id="0" name="Seconds">1</param>
+                        </action>
+                        <action id="-10" name="Add to" sid="5227087880271323" type="System">
+                            <param id="0" name="Variable">Level</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                        <action id="-26" name="Restart layout" sid="9354838225771228" type="System" />
+                    </actions>
+                </event-block>
+                <event-block sid="5861857962582159">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="1040267946212589" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1731000310753551" type="System">
+                            <param id="0" name="Variable">Level</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="2905190049680582">
+                            <conditions>
+                                <condition id="-14" name="Compare variable" sid="5709103923656037" type="System">
+                                    <param id="0" name="Variable">score</param>
+                                    <param id="1" name="Comparison">4</param>
+                                    <param id="2" name="Value">HighScore</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="7031517128337592" type="System">
+                                    <param id="0" name="Variable">HighScore</param>
+                                    <param id="1" name="Value">score</param>
+                                </action>
+                                <action id="0" name="Set item" sid="6195575912132263" type="LocalStorage">
+                                    <param id="0" name="Key">HIGHSCORENAME</param>
+                                    <param id="1" name="Value">score</param>
+                                </action>
+                                <action id="-2" name="Go to layout" sid="1112495409975953" type="System">
+                                    <param id="0" name="Layout">End Layout</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="1080199529096538">
+                            <conditions>
+                                <condition id="-22" name="Else" sid="8622092893317828" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="-2" name="Go to layout" sid="5190883668724245" type="System">
+                                    <param id="0" name="Layout">End Layout</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="4137823730664197">
+            <conditions>
+                <condition id="-1" name="Compare X" sid="2263502821113311" type="Bullet">
+                    <param id="0" name="Comparison">4</param>
+                    <param id="1" name="X co-ordinate">1708</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="5821002904812404">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="5115357046466573" type="System">
+                            <param id="0" name="Variable">bullets</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                        <condition id="-7" name="Compare instance variable" sid="6514075152601669" type="Bullet">
+                            <param id="0" name="Instance variable">LastBullet</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="8736493225265232" type="Function">
+                            <param id="0" name="Name">&quot;EndGame&quot;</param>
+                            <param id="1" name="Parameter {n}">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="8591315911513711">
+                    <conditions />
+                    <actions>
+                        <action id="-9" name="Destroy" sid="146183172130735" type="Bullet" />
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>
